@@ -31,8 +31,11 @@ class OllamaPromt
             - Erkenne die Bedeutung – auch wenn er andere Wörter oder Synonyme benutzt.
             - Achte darauf, ob die Bedeutung einem Funktionsaufruf entspricht.
 
-            Wenn **ja**, antworte folgender maßen: JA - funktionsname - parameter. 
-            (Falls mehrere Parameter angegeben werden zum Beispiel schließe Spotify in 30 sekunden, hänge einfach ein weiteren bindestrich mit dem zweiten oder dritten parameter also ungefähr so 'JA - closeProgram - spotify - 30')
+            Wenn **ja**, antworte folgender maßen: JA - funktionsname: parameter. 
+            (Falls mehrere Parameter angegeben werden zum Beispiel schließe Spotify in 30 sekunden, hänge einfach ein den Wert mit einem komma getrennt hinter dran. 
+            Also ungefähr so 'JA - closeProgram: spotify, value: 30')
+            Oder bei beispielsweise 'Öffne whatsapp in 5 Minuten':
+            'JA - openProgram: WhtasApp, value: 300')
             
             Wenn **nein**, antworte nur mit **NEIN**.  
             Antworte **niemals** mit etwas anderem.
@@ -40,14 +43,16 @@ class OllamaPromt
             Jim: {userInput}
         ";
     }
-    public string getProgramOllamaPrompt(string userInput, string ollamaAnswer)
+    public string getProgramOllamaPrompt(string ollamaAnswer)
     {
+        // return ollamaAnswer;
         return $@"
             Kannst du folgendes in ein JSON format packen.
             Bachte dabei folgendes:
             1. Das'JA' ganz am Anfang MUSS entfernt werden da es nicht mit ins JSON gehört!
             2. Alle Bindestriche MÜSSEN entfernt werden!
             3. Ein Wert NULL sollte mit der Zahl 0 ersetzt werden!
+            4. Bei mehreren Parametern benutze immer den key 'value'.
             Hier ist wichtig das du ausschließlich nur dieses JSON dann als Antwort gibts und nichts weiteres schreibst. 
             {ollamaAnswer}
         ";

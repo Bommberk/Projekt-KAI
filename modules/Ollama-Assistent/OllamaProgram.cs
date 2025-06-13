@@ -26,7 +26,33 @@ class OllamaProgram
             return;
 
         string output = await startOllama.sendRequest(userInput);
+        // Console.WriteLine($"\nOllama:\n {output}");
+        // return;
         output = await startOllama.sendRequest(userInput, output);
+
+
+        bool isJson = false;
+        try
+        {
+            JsonDocument.Parse(output);
+            isJson = true;
+        }
+        catch (JsonException)
+        {
+            isJson = false;
+        }
+
+        if (isJson)
+        {
+            using (JsonDocument doc = JsonDocument.Parse(output))
+            {
+                foreach (JsonProperty property in doc.RootElement.EnumerateObject())
+                {
+                    Console.WriteLine($"Key: {property.Name}");
+                    Console.WriteLine($"Value: {property.Value}");
+                }
+            }
+        }
         // if (output == "NEIN")
         // {
         //     output = await startOllama.sendRequest(userInput, output);

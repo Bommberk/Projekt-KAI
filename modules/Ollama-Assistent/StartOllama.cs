@@ -28,7 +28,7 @@ class StartOllama
         }
         else
         {
-            myPrompt = ollamaPromt.getProgramOllamaPrompt(userInput, ollamaAnswer);
+            myPrompt = ollamaPromt.getProgramOllamaPrompt(ollamaAnswer);
         }
 
         var requestData = new
