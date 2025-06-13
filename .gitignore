@@ -1,1 +1,2 @@
-assets/vosk-models
+assets/vosk-models/*/
+assets/FaceTraining/*/
