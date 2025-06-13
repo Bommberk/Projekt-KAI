@@ -3,18 +3,24 @@ class PcMethods
 {
     public void closeProgram(string programName)
     {
-        return;
-        var processes = Process.GetProcessesByName(programName);
-        foreach (var p in processes)
+        if (!string.IsNullOrWhiteSpace(programName))
         {
-            try
+            var processes = Process.GetProcessesByName(programName);
+            foreach (var p in processes)
             {
-                p.Kill();
+                try
+                {
+                    p.Kill();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fehler beim Schließen von {programName}: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fehler beim Schließen von {programName}: {ex.Message}");
-            }
+        }
+        else
+        {
+            Console.WriteLine("Kein Parameter angegeben");
         }
     }
     public void startProgram(string programName)
@@ -34,7 +40,7 @@ class PcMethods
     }
     public void shutDownPc(int seconds)
     {
-        // Process.Start("shutdown", $"/s /t {seconds}");
-        Console.WriteLine("aösldkfj");
+        Process.Start("shutdown", $"/s /t {seconds}");
+        // Console.WriteLine("aösldkfj");
     }
 }

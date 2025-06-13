@@ -9,7 +9,7 @@ public class Methods
     PcMethods pcMethods = new PcMethods();
     public void closeProgram(string programName) { pcMethods.closeProgram(programName); }
     public void startProgram(string programName) { pcMethods.startProgram(programName); }
-    public void shutDownPc(int seconds = 0) { pcMethods.shutDownPc(seconds); }
+    public void shutDownPc() { pcMethods.shutDownPc(0); }
 
     // Media Steuerung
     public void playOrPause() { MediaMethods.SendPlayPause(); }
