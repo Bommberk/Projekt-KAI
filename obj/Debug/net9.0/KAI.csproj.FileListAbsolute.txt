@@ -1,2 +1,0 @@
-C:\Users\jimsm\Desktop\C#\Project-KAI\KAI\bin\Debug\net9.0\KAI.exe
-C:\Users\jimsm\Desktop\C#\Project-KAI\KAI\bin\Debug\net9.0\KAI.dll
