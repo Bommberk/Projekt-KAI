@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Methods;
 
 class OllamaProgram
@@ -20,15 +21,22 @@ class OllamaProgram
         // Console.WriteLine(string.Join(", ",infoOverMethod.getListOfAllMethods()));
         // Console.WriteLine(infoOverMethod.getListOfAllMethods());
 
+        // string answer = await startOllama.sendRequest(userInput);
+        // Console.WriteLine($"\nOllama:\n {answer}");
+
+
+
         // return;
+
 
         if (string.IsNullOrWhiteSpace(userInput) || userInput.ToLower() == "exit" || userInput.ToLower() == "nun" || userInput.ToLower() == "tun")
             return;
 
         string output = await startOllama.sendRequest(userInput);
-        // Console.WriteLine($"\nOllama:\n {output}");
+        Console.WriteLine($"\nOllama:\n {output}");
         // return;
         output = await startOllama.sendRequest(userInput, output);
+        Console.WriteLine($"\nOllama:\n {output}");
 
 
         bool isJson = false;
@@ -44,19 +52,17 @@ class OllamaProgram
 
         if (isJson)
         {
-            using (JsonDocument doc = JsonDocument.Parse(output))
+            var jsonOutput = JsonDocument.Parse(output);
+            JsonElement root = jsonOutput.RootElement;
+            if (root.ValueKind == JsonValueKind.Object)
             {
-                foreach (JsonProperty property in doc.RootElement.EnumerateObject())
+                foreach (JsonProperty property in root.EnumerateObject())
                 {
-                    Console.WriteLine($"Key: {property.Name}");
-                    Console.WriteLine($"Value: {property.Value}");
+                    string methodName = property.Name;
+                    string parameter = property.Value.ToString();
+                    infoOverMethod.callMethod(methodName, parameter);
                 }
             }
         }
-        // if (output == "NEIN")
-        // {
-        //     output = await startOllama.sendRequest(userInput, output);
-        // }
-        Console.WriteLine($"\nOllama:\n {output}");
     }
 }

@@ -17,6 +17,9 @@ class StartOllama
         const string url = "http://localhost:11434/api/generate";
         const string model = "llama3";
 
+
+        // string myPrompt = ollamaPromt.getWhichProgramPromt(userInput, infoOverMethod.getListOfAllMethods());
+
         string myPrompt;
         if (ollamaAnswer == null)
         {

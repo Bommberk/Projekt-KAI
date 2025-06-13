@@ -3,6 +3,7 @@ class PcMethods
 {
     public void closeProgram(string programName)
     {
+        return;
         var processes = Process.GetProcessesByName(programName);
         foreach (var p in processes)
         {
@@ -23,7 +24,7 @@ class PcMethods
         {
             try
             {
-                p.Kill();
+                Process.Start(new ProcessStartInfo("explorer.exe", $"{programName}:") { UseShellExecute = true });
             }
             catch (Exception ex)
             {
@@ -33,6 +34,7 @@ class PcMethods
     }
     public void shutDownPc(int seconds)
     {
-        Process.Start("shutdown", $"/s /t {seconds}");
+        // Process.Start("shutdown", $"/s /t {seconds}");
+        Console.WriteLine("aösldkfj");
     }
 }

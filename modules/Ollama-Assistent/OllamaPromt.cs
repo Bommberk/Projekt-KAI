@@ -1,3 +1,5 @@
+using Methods;
+
 namespace Modules.OllamaAssistent;
 
 class OllamaPromt
@@ -31,7 +33,7 @@ class OllamaPromt
             - Erkenne die Bedeutung – auch wenn er andere Wörter oder Synonyme benutzt.
             - Achte darauf, ob die Bedeutung einem Funktionsaufruf entspricht.
 
-            Wenn **ja**, antworte folgender maßen: JA - funktionsname: parameter. 
+            Wenn **ja**, antworte folgender maßen: JA - funktionsname: parameter. (Falls kein Parameter erkannt wird schreibe einfach null)
             (Falls mehrere Parameter angegeben werden zum Beispiel schließe Spotify in 30 sekunden, hänge einfach ein den Wert mit einem komma getrennt hinter dran. 
             Also ungefähr so 'JA - closeProgram: spotify, value: 30')
             Oder bei beispielsweise 'Öffne whatsapp in 5 Minuten':
@@ -51,8 +53,6 @@ class OllamaPromt
             Bachte dabei folgendes:
             1. Das'JA' ganz am Anfang MUSS entfernt werden da es nicht mit ins JSON gehört!
             2. Alle Bindestriche MÜSSEN entfernt werden!
-            3. Ein Wert NULL sollte mit der Zahl 0 ersetzt werden!
-            4. Bei mehreren Parametern benutze immer den key 'value'.
             Hier ist wichtig das du ausschließlich nur dieses JSON dann als Antwort gibts und nichts weiteres schreibst. 
             {ollamaAnswer}
         ";
@@ -62,6 +62,22 @@ class OllamaPromt
         return $@"
             Bitte schreibe immer auf deutsch.
             {userInput}
+        ";
+    }
+
+    public string getWhichProgramPromt(string userInput,string[] methodList)
+    {
+        string methods = string.Join(", ", methodList);
+        string parameters = string.Join(", ", new InfoOverMethod().getMethodRequirement());
+        Console.WriteLine(parameters);
+        return $@"
+            Hier ist eine Liste von allen Methoden die es gibt:
+            {methods}
+            Nenne mir welche Methode ich mit folgendem aufrufen möchte:
+            {userInput}
+            **WICHTIG**
+            Antworte nur mit dem Methodennamen der aufgerufen werden soll!
+            Falls keine passende Methode gefunden wurde antworte einfach nur mit 'NEIN' und mit NICHTS ANDEREM!!!
         ";
     }
 }
