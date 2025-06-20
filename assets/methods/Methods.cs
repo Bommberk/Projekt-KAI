@@ -2,9 +2,13 @@ namespace Methods;
 
 using System.Diagnostics;
 using Spotify;
+using NameTextToSpeech;
 
 public class Methods
 {
+    // Textausgabe
+    NameProgram textToSpeech = new NameProgram();
+
     // PC Methods
     PcMethods pcMethods = new PcMethods();
     public void closeProgram(string programName) { pcMethods.closeProgram(programName); }
@@ -12,14 +16,27 @@ public class Methods
     public void shutDownPc() { pcMethods.shutDownPc(0); }
 
     // Media Steuerung
-    public void playOrPause() { MediaMethods.SendPlayPause(); }
-    public void nextMedia() { MediaMethods.SendNextTrack(); }
-    public void previousMedia() { MediaMethods.SendPreviousTrack(); }
+    MediaMethods mediaMethods = new MediaMethods();
+    public void playOrPause() { mediaMethods.sendPlayPause(); }
+    public void nextMedia() { mediaMethods.sendNextTrack(); }
+    public void previousMedia() { mediaMethods.sendPreviousTrack(); }
+    public void setVolume(object volume)
+    {
+        try{
+            int vol = Convert.ToInt32(volume);
+            mediaMethods.setVolume(vol);
+        }catch (Exception e)
+        {
+            textToSpeech.Run($"Fehler: {e.Message}");
+        }
+    }
 
     // Spotify Steuerung
     SpotifyMethods spotifyMethods = new SpotifyMethods();
 
-    // Allgemeine PC Steuerung
+    // Allgemeine PC Infos
+    GeneralPCInfosMethods generalPCInfos = new GeneralPCInfosMethods();
+    public void getCurrentVolume() { generalPCInfos.getCurrentVolume(); }
 
     // Test Methoden
     public void TestFunction(string parameter)

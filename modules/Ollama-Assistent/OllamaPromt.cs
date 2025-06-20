@@ -39,7 +39,7 @@ class OllamaPromt
             Oder bei beispielsweise 'Öffne whatsapp in 5 Minuten':
             'JA - openProgram: WhtasApp, value: 300')
             
-            Wenn **nein**, antworte nur mit **NEIN**.  
+            Wenn **nein**, antworte nur mit NEIN.  
             Antworte **niemals** mit etwas anderem.
 
             Jim: {userInput}

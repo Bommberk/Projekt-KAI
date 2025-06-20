@@ -1,9 +1,15 @@
 namespace Methods;
 
 using System.Runtime.InteropServices;
+using AudioSwitcher.AudioApi.CoreAudio;
+using NameTextToSpeech;
 
 class MediaMethods
 {
+    // Textausgabe
+    NameProgram textToSpeech = new NameProgram();
+
+    // Media Steuerung
     [DllImport("user32.dll", SetLastError = true)]
     private static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
@@ -15,21 +21,31 @@ class MediaMethods
     private const int KEYEVENTF_KEYDOWN = 0x0000; // Tastendruck
     private const int KEYEVENTF_KEYUP = 0x0002;   // Loslassen
 
-    public static void SendPlayPause()
+    public void sendPlayPause()
     {
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYUP, 0);
     }
-
-    public static void SendNextTrack()
+    public void sendNextTrack()
     {
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYUP, 0);
     }
-
-    public static void SendPreviousTrack()
+    public void sendPreviousTrack()
     {
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
+        textToSpeech.Run("Vorheriger Track wird abgespielt");
+    }
+
+    // Lautstärke ändern
+    public void setVolume(int volume)
+    {
+        var defaultDevice = new CoreAudioController().DefaultPlaybackDevice;
+        volume = Math.Max(0, Math.Min(100, volume));
+        defaultDevice.Volume = volume;
+        textToSpeech.Run($"Lautstärke wurde auf {volume}% gesetzt");
     }
 }

@@ -16,8 +16,5 @@ class Program
         }
         // var voskProgram = new VoskProgram();
         // voskProgram.Run();
-
-        
-
     }
 }

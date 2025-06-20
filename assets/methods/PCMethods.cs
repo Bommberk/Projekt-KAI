@@ -25,16 +25,19 @@ class PcMethods
     }
     public void startProgram(string programName)
     {
-        var processes = Process.GetProcessesByName(programName);
-        foreach (var p in processes)
+        if (!string.IsNullOrWhiteSpace(programName))
         {
-            try
+            var processes = Process.GetProcessesByName(programName);
+            foreach (var p in processes)
             {
-                Process.Start(new ProcessStartInfo("explorer.exe", $"{programName}:") { UseShellExecute = true });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fehler beim Öffnen von {programName}: {ex.Message}");
+                try
+                {
+                    Process.Start(new ProcessStartInfo("explorer.exe", $"{programName}:") { UseShellExecute = true });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fehler beim Öffnen von {programName}: {ex.Message}");
+                }
             }
         }
     }

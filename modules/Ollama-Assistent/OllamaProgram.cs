@@ -29,7 +29,7 @@ class OllamaProgram
         // return;
 
 
-        if (string.IsNullOrWhiteSpace(userInput) || userInput.ToLower() == "exit" || userInput.ToLower() == "nun" || userInput.ToLower() == "tun")
+        if (string.IsNullOrWhiteSpace(userInput) || userInput.ToLower() == "exit" || userInput.ToLower() == "nun" || userInput.ToLower() == "tun" || userInput.ToLower() == "einen")
             return;
 
         string output = await startOllama.sendRequest(userInput);

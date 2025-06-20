@@ -51,6 +51,7 @@ class InfoOverMethod
         // Wenn die Methode gefunden wurde, dann aufrufen
         if (method != null)
         {
+            Console.WriteLine($"🔍 Aufruf der Methode: {methodName}");
             ParameterInfo[] parameters = method.GetParameters();
 
             if (parameters.Length == 0 || parameter == "null")
@@ -63,8 +64,9 @@ class InfoOverMethod
             else if (parameters.Length == 1 && parameter != null)
             {
                 // Methode hat einen Parameter und du hast einen übergeben
+                Console.WriteLine("⏳ Methode wird mit Parameter ausgeführt.");
                 method.Invoke(methodsInstance, new object[] { parameter });
-                Console.WriteLine("Methode wurde mit Parameter ausgeführt.");
+                Console.WriteLine("✅ Methode wurde mit Parameter ausgeführt.");
             }
             else
             {

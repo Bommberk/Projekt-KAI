@@ -52,7 +52,7 @@ class VoskProgram
                 string result = recognizer.Result();
                 if (showSentences)
                     Console.WriteLine("✅ Satz: " + ExtractText(result));
-                    await ollamaProgram.Run(ExtractText(result));
+                    ollamaProgram.Run(ExtractText(result));
             }
             // else
             // {
