@@ -1,4 +1,5 @@
 assets/vosk-models/*/
 assets/FaceTraining/*/
 obj/Debug/
+obj/project.nuget.cache
 bin/
