@@ -3,3 +3,4 @@ assets/FaceTraining/*/
 obj/Debug/
 obj/project.nuget.cache
 bin/
+tts_output.wav

@@ -7,42 +7,47 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Methods;
+using Modules.CoquiTextToSpeech;
 
 class OllamaProgram
 {
     StartOllama startOllama = new StartOllama();
     InfoOverMethod infoOverMethod = new InfoOverMethod();
+    CoquiProgram ttsProgram = new CoquiProgram();
     
     public async Task Run(string? userInput)
     {
-        // Console.WriteLine("🧠 OLLAMA CHAT");
-        // Console.WriteLine("Gib eine Frage ein (oder 'exit' zum Beenden):");
-
-        // Console.WriteLine(string.Join(", ",infoOverMethod.getListOfAllMethods()));
-        // Console.WriteLine(infoOverMethod.getListOfAllMethods());
-
-        // string answer = await startOllama.sendRequest(userInput);
-        // Console.WriteLine($"\nOllama:\n {answer}");
-
-
-
-        // return;
-
+        // var ttsProgram = new CoquiProgram();
 
         if (string.IsNullOrWhiteSpace(userInput) || userInput.ToLower() == "exit" || userInput.ToLower() == "nun" || userInput.ToLower() == "tun" || userInput.ToLower() == "einen")
             return;
 
-        string output = await startOllama.sendRequest(userInput);
-        Console.WriteLine($"\nOllama:\n {output}");
-        // return;
-        output = await startOllama.sendRequest(userInput, output);
-        Console.WriteLine($"\nOllama:\n {output}");
+        string output1 = await startOllama.sendRequest(userInput);
+        Console.WriteLine($"\nOllama:\n {output1}");
+        string output2 = await startOllama.sendRequest(userInput, output1);
+        if (output1 == "NEIN")
+        {
+            try
+            {
+                // Console.WriteLine($"\nOllama:\n {output2}");
+                string ollamaOutput = output2.ToString();
+                await ttsProgram.Speak(ollamaOutput);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Fehler beim Sprechen: {e.Message}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"\nOllama:\n {output2}");
+        }
 
 
         bool isJson = false;
         try
         {
-            JsonDocument.Parse(output);
+            JsonDocument.Parse(output2);
             isJson = true;
         }
         catch (JsonException)
@@ -52,7 +57,7 @@ class OllamaProgram
 
         if (isJson)
         {
-            var jsonOutput = JsonDocument.Parse(output);
+            var jsonOutput = JsonDocument.Parse(output2);
             JsonElement root = jsonOutput.RootElement;
             if (root.ValueKind == JsonValueKind.Object)
             {

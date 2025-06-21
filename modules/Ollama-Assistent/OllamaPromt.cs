@@ -1,6 +1,6 @@
-using Methods;
-
 namespace Modules.OllamaAssistent;
+
+using Methods;
 
 class OllamaPromt
 {

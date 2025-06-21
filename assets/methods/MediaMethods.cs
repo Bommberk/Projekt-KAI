@@ -1,13 +1,14 @@
 namespace Methods;
 
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using AudioSwitcher.AudioApi.CoreAudio;
-using NameTextToSpeech;
+using Modules.CoquiTextToSpeech;
 
 class MediaMethods
 {
-    // Textausgabe
-    NameProgram textToSpeech = new NameProgram();
+    // Sprechen
+    CoquiProgram tts = new CoquiProgram();
 
     // Media Steuerung
     [DllImport("user32.dll", SetLastError = true)]
@@ -25,11 +26,13 @@ class MediaMethods
     {
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYUP, 0);
+        tts.Speak("Medium wurde angehalten oder gestartet.");
     }
     public void sendNextTrack()
     {
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYUP, 0);
+        tts.Speak("Nächstes Medium wird abgespielt.");
     }
     public void sendPreviousTrack()
     {
@@ -37,7 +40,13 @@ class MediaMethods
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
-        textToSpeech.Run("Vorheriger Track wird abgespielt");
+        tts.Speak("Vorheriges Medium wird abgespielt.");
+    }
+    public void sendRepeatTrack()
+    {
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
+        tts.Speak("Medium wird wiederholt.");
     }
 
     // Lautstärke ändern
@@ -46,6 +55,6 @@ class MediaMethods
         var defaultDevice = new CoreAudioController().DefaultPlaybackDevice;
         volume = Math.Max(0, Math.Min(100, volume));
         defaultDevice.Volume = volume;
-        textToSpeech.Run($"Lautstärke wurde auf {volume}% gesetzt");
+        tts.Speak($"Lautstärke wurde auf {volume} Prozenz gesetzt.");
     }
 }

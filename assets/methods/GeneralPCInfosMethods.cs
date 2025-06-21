@@ -1,17 +1,19 @@
 namespace Methods;
 
+using System.Threading.Tasks;
 using AudioSwitcher.AudioApi.CoreAudio;
-using NameTextToSpeech;
+using Modules.CoquiTextToSpeech;
 
 class GeneralPCInfosMethods
 {
-    NameProgram textToSpeech = new NameProgram();
+    // Sprechen
+    CoquiProgram tts = new CoquiProgram();
     // Welche Lautstärke
     public void getCurrentVolume()
     {
         var defaultDevice = new CoreAudioController().DefaultPlaybackDevice;
         int currentVolume = (int)defaultDevice.Volume;
-        textToSpeech.Run($"Die aktuelle Lautstärke beträgt {currentVolume}%");
+        tts.Speak($"Die aktuelle Lautstärke beträgt {currentVolume} Prozent.");
     }
     // Welches Media läuft
     // Welche Programme laufen

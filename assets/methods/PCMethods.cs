@@ -43,7 +43,7 @@ class PcMethods
     }
     public void shutDownPc(int seconds)
     {
-        Process.Start("shutdown", $"/s /t {seconds}");
-        // Console.WriteLine("aösldkfj");
+        // Process.Start("shutdown", $"/s /t {seconds}");
+        Console.WriteLine("aösldkfj");
     }
 }

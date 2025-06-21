@@ -2,12 +2,13 @@ namespace Methods;
 
 using System.Diagnostics;
 using Spotify;
-using NameTextToSpeech;
+using Modules.CoquiTextToSpeech;
+using System.Threading.Tasks;
 
 public class Methods
 {
-    // Textausgabe
-    NameProgram textToSpeech = new NameProgram();
+    // Sprechen 
+    CoquiProgram tts = new CoquiProgram();
 
     // PC Methods
     PcMethods pcMethods = new PcMethods();
@@ -20,14 +21,17 @@ public class Methods
     public void playOrPause() { mediaMethods.sendPlayPause(); }
     public void nextMedia() { mediaMethods.sendNextTrack(); }
     public void previousMedia() { mediaMethods.sendPreviousTrack(); }
-    public void setVolume(object volume)
+    public void repeatMedia() { mediaMethods.sendRepeatTrack(); }
+    public async Task setVolume(object volume)
     {
-        try{
+        try
+        {
             int vol = Convert.ToInt32(volume);
             mediaMethods.setVolume(vol);
-        }catch (Exception e)
+        }
+        catch (Exception e)
         {
-            textToSpeech.Run($"Fehler: {e.Message}");
+            await tts.Speak($"Fehler beim Sezten der Lautstärke: {e.Message}");
         }
     }
 
