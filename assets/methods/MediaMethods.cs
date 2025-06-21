@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using AudioSwitcher.AudioApi.CoreAudio;
 using Modules.CoquiTextToSpeech;
 
+
 class MediaMethods
 {
     // Sprechen
     CoquiProgram tts = new CoquiProgram();
+
+    GeneralPCInfosMethods PCInfosMethods = new GeneralPCInfosMethods();
 
     // Media Steuerung
     [DllImport("user32.dll", SetLastError = true)]
@@ -24,37 +27,43 @@ class MediaMethods
 
     public void sendPlayPause()
     {
+        if (new GeneralPCInfosMethods().IsMediaRunning())
+        {
+            tts.Speak("Medium wird pausiert.");
+        } else {
+            tts.Speak("Medium wird gestartet.");
+        }
+
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYUP, 0);
-        tts.Speak("Medium wurde angehalten oder gestartet.");
     }
     public void sendNextTrack()
     {
+        tts.Speak("Nächstes Medium wird abgespielt.");
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYUP, 0);
-        tts.Speak("Nächstes Medium wird abgespielt.");
     }
     public void sendPreviousTrack()
     {
-        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
-        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
-        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
-        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
         tts.Speak("Vorheriges Medium wird abgespielt.");
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
+        keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
     }
     public void sendRepeatTrack()
     {
+        tts.Speak("Medium wird wiederholt.");
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
-        tts.Speak("Medium wird wiederholt.");
     }
 
     // Lautstärke ändern
     public void setVolume(int volume)
     {
+        tts.Speak($"Lautstärke wird auf {volume} Prozent gesetzt.");
         var defaultDevice = new CoreAudioController().DefaultPlaybackDevice;
         volume = Math.Max(0, Math.Min(100, volume));
         defaultDevice.Volume = volume;
-        tts.Speak($"Lautstärke wurde auf {volume} Prozenz gesetzt.");
     }
 }

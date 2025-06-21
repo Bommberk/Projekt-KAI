@@ -13,15 +13,16 @@ class Program
         var ttsProgram = new CoquiProgram();
         await ttsProgram.StartTtsServer();
 
-        while (true)
-        {
-            Console.Write("\nDu: ");
-            string? userInput = Console.ReadLine();
-            await new OllamaProgram().Run(userInput);
-        }
+        // while (true)
+        // {
+        //     Console.Write("\nDu: ");
+        //     string? userInput = Console.ReadLine();
+        //     await new OllamaProgram().Run(userInput);
+        // }
 
-        // var voskProgram = new VoskProgram();
-        // voskProgram.Run();
+        // Programm Start
+        var voskProgram = new VoskProgram();
+        await voskProgram.Run();
 
         AppDomain.CurrentDomain.ProcessExit += async (sender, e) =>
         {
