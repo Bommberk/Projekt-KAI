@@ -1,0 +1,10 @@
+assets/vosk-models/*/
+assets/FaceTraining/*/
+assets/temp/*
+
+obj/
+bin/
+
+modules/Whisper-Speech-to-text/whisper.cpp/
+
+KAI.sln
