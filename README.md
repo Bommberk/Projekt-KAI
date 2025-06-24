@@ -12,7 +12,7 @@
 2. Setup a new .NET project  
     `dotnet new console -n ProjektKAI`
 3. Clone this repositoy  
-    `cd ProjektKAI`
+    `cd ProjektKAI`  
     `git clone https://github.com/Bommberk/Projekt-KAI.git`
 4. Copy the files from the cloned repository to your project folder and delete the Repository folder:
     - Copy the files from the `Projekt-KAI` folder to your project folder
