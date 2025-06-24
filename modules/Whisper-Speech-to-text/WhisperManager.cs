@@ -12,7 +12,7 @@ using NAudio.Wave;
 class WhisperManager
 {
     // Prüfe, ob der Whisper-Server läuft, und starte ihn ggf.
-    public async Task StartWhisperServer(string modelPath = "whisper.cpp/models/ggml-base.bin", string language = "de", string port = "8080")
+    public async Task StartWhisperServer(string modelPath = "modules/Whisper-Speech-to-text/whisper.cpp/models/ggml-base.bin", string language = "de", string port = "8080")
     {
         if (Process.GetProcessesByName("whisper-server").Length == 0)
         {
@@ -21,13 +21,21 @@ class WhisperManager
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "whisper.cpp/build/bin/Release/whisper-server.exe",
+                    FileName = "modules/Whisper-Speech-to-text/whisper.cpp/build/bin/Release/whisper-server.exe",
                     Arguments = $"-m \"{modelPath}\" -l {language} --port {port}",
                     UseShellExecute = false,
                     CreateNoWindow = true
                 }
             };
-            serverProcess.Start();
+            try
+            {
+                serverProcess.Start();
+                Console.WriteLine($"Erfolgreich gestartet");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Fehler beim starten von Whisperserver: {e}");
+            }
             await Task.Delay(3000);
         }
         else

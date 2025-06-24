@@ -16,7 +16,7 @@ class Program
 
         // Programm Start
         var whisperManager = new WhisperManager();
-        string modelPath = "whisper.cpp/models/ggml-medium.bin";
+        string modelPath = "modules/Whisper-Speech-to-text/whisper.cpp/models/ggml-medium.bin";
         await whisperManager.StartWhisperServer(modelPath);
 
         while (true)

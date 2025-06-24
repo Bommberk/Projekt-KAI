@@ -1,6 +1,7 @@
 assets/vosk-models/*/
 assets/FaceTraining/*/
-assets/temp/*
+assets/temp/stt_input.wav
+assets/temp/tts_output.wav
 
 obj/
 bin/
