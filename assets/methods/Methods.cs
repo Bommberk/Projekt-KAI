@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Spotify;
 using Modules.CoquiTextToSpeech;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 public class Methods
 {
@@ -36,7 +37,16 @@ public class Methods
     }
 
     // Spotify Steuerung
-    SpotifyMethods spotifyMethods = new SpotifyMethods();
+    private SpotifyManager spotifyManager = new SpotifyManager(new SpotifyAuthService());
+    public async Task playSpotifyMusic(){ await spotifyManager.PlayAsync(); }
+    public async Task pauseSpotifyMusic(){ await spotifyManager.PauseAsync(); }
+    public async Task nextSpotifyTrack(){ await spotifyManager.SkipNextAsync(); }
+    public async Task previousSpotifyTrack(){ await spotifyManager.SkipPreviousAsync(); }
+    public async Task playSpotifySongByName(string title, string artist = null)
+    {
+        await spotifyManager.PlaySongByNameAsync(title, artist);
+    }
+
 
     // Allgemeine PC Infos
     GeneralPCInfosMethods generalPCInfos = new GeneralPCInfosMethods();

@@ -14,7 +14,7 @@ public class SpotifyAuthService
     private const string clientId = "6f27c2b7d3064aca8140c2aaba53192f";
     private const string clientSecret = "6bb082b601e741e3829737af836dbb88";
     private const string redirectUri = "http://127.0.0.1:5000/callback/";
-    private const string tokenFile = "spotify_token.txt";
+    private const string tokenFile = "assets/temp/spotify_token.txt";
 
     private string accessToken;
     private string refreshToken;

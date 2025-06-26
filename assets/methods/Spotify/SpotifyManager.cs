@@ -6,12 +6,12 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-public class SpotifyController
+public class SpotifyManager
 {
     private readonly SpotifyAuthService _authService;
     private readonly HttpClient _httpClient;
 
-    public SpotifyController(SpotifyAuthService authService)
+    public SpotifyManager(SpotifyAuthService authService)
     {
         _authService = authService;
         _httpClient = new HttpClient();

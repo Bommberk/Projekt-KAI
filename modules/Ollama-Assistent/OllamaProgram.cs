@@ -57,6 +57,7 @@ class OllamaProgram
 
         if (isJson)
         {
+            Console.WriteLine("JSON erkannt, verarbeite...");
             var jsonOutput = JsonDocument.Parse(output2);
             JsonElement root = jsonOutput.RootElement;
             if (root.ValueKind == JsonValueKind.Object)
@@ -65,9 +66,14 @@ class OllamaProgram
                 {
                     string methodName = property.Name;
                     string parameter = property.Value.ToString();
+                    Console.WriteLine($"Aufruf der Methode: {methodName} mit Parameter: {parameter}");
                     infoOverMethod.callMethod(methodName, parameter);
                 }
             }
+        }
+        else
+        {
+            Console.WriteLine("Kein JSON erkannt.");
         }
     }
 }

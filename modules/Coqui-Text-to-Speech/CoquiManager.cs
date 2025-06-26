@@ -99,5 +99,6 @@ public class TTSManager
         {
             Console.WriteLine($"Fehler bei TTS: {ex.Message}");
         }
+        CoquiProgram.isSpeaking = false; // TTS abgeschlossen
     }
 }

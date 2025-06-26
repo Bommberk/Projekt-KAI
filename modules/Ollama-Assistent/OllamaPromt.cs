@@ -35,9 +35,9 @@ class OllamaPromt
 
             Wenn **ja**, antworte folgender maßen: JA - funktionsname: parameter. (Falls kein Parameter erkannt wird schreibe einfach null)
             (Falls mehrere Parameter angegeben werden zum Beispiel schließe Spotify in 30 sekunden, hänge einfach ein den Wert mit einem komma getrennt hinter dran. 
-            Also ungefähr so 'JA - closeProgram: spotify, value: 30')
+            Also ungefähr so 'JA - closeProgram: spotify, 30')
             Oder bei beispielsweise 'Öffne whatsapp in 5 Minuten':
-            'JA - openProgram: WhtasApp, value: 300')
+            'JA - openProgram: WhtasApp, 300')
             
             Wenn **nein**, antworte nur mit NEIN.  
             Antworte **niemals** mit etwas anderem.

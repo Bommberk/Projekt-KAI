@@ -10,6 +10,7 @@ using System.Threading.Tasks.Dataflow;
 using Modules.OllamaAssistent;
 using Modules.WhisperSpeechToText;
 using System.Net;
+using Modules.CoquiTextToSpeech;
 
 // Wie oben, aber mit showRecordings & showSentences Unterstützung
 
@@ -43,6 +44,10 @@ class VoskProgram
 
         waveIn.DataAvailable += async (s, a) =>
         {
+            if (CoquiProgram.isSpeaking)
+            {
+                return;
+            }
             if (recognizer.AcceptWaveform(a.Buffer, a.BytesRecorded))
             {
                 string result = recognizer.Result();
@@ -69,7 +74,8 @@ class VoskProgram
                     try
                     {
                         whisperManager.StartRecording();
-                    }catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         Console.WriteLine("Fehler beim Starten der Aufnahme: " + ex.Message);
                     }

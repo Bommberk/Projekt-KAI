@@ -14,6 +14,7 @@ class WhisperManager
     static WaveInEvent? waveIn = null;
     static bool isRecording = false;
     static WaveFileWriter? writer = null;
+    static Process serverProcess = null;
     static string wavPath = "assets/temp/stt_input.wav";
     // Prüfe, ob der Whisper-Server läuft, und starte ihn ggf.
     public async Task StartWhisperServer(string modelPath = "modules/Whisper-Speech-to-text/whisper.cpp/models/ggml-base.bin", string language = "de", string port = "8080")
@@ -21,12 +22,12 @@ class WhisperManager
         if (Process.GetProcessesByName("whisper-server").Length == 0)
         {
             Console.WriteLine("Starte Whisper-Server...");
-            var serverProcess = new Process
+            serverProcess = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "modules/Whisper-Speech-to-text/whisper.cpp/build/bin/Release/whisper-server.exe",
-                    Arguments = $"-m \"{modelPath}\" -l {language} --port {port}",
+                    Arguments = $"-m \"{modelPath}\" -l {language} --port {port} --no-context",
                     UseShellExecute = false,
                     CreateNoWindow = true
                 }
@@ -72,6 +73,28 @@ class WhisperManager
             Console.WriteLine("Fehler: " + e.Message);
         }
         return null;
+    }
+
+    // Server stoppen
+    public void StopWhisperServer()
+    {
+        if (serverProcess != null && !serverProcess.HasExited)
+        {
+            serverProcess.Kill();
+            serverProcess.WaitForExit();
+            serverProcess.Dispose();
+            serverProcess = null;
+            Console.WriteLine("Whisper-Server wurde gestoppt.");
+        }
+        else
+        {
+            // Fallback, falls man den Prozess nicht gespeichert hat
+            foreach (var p in Process.GetProcessesByName("whisper-server"))
+            {
+                p.Kill();
+            }
+            Console.WriteLine("Whisper-Server-Prozesse beendet.");
+        }
     }
 
     // Startet die Audioaufnahme

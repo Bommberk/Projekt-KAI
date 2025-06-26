@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 class CoquiProgram
 {
     TTSManager tts = new TTSManager();
+    public static bool isSpeaking = false;
     public async Task StartTtsServer()
     {
         tts.StartTtsServer();
@@ -22,6 +23,7 @@ class CoquiProgram
 
     public async Task Speak(string text)
     {
+        isSpeaking = true;
         await tts.Speak(text);
     }
 

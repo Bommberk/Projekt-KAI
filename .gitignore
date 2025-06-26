@@ -1,7 +1,7 @@
 assets/vosk-models/*/
 assets/FaceTraining/*/
-assets/temp/stt_input.wav
-assets/temp/tts_output.wav
+assets/temp/*
+!assets/temp/README.md
 
 obj/
 bin/
