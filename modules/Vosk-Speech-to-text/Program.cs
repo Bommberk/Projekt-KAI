@@ -64,7 +64,6 @@ class VoskProgram
             else
             {
                 string partial = recognizer.PartialResult();
-                Console.WriteLine("... " + ExtractPartial(partial));
                 if (ExtractPartial(partial).Length > 0)
                 {
                     try
