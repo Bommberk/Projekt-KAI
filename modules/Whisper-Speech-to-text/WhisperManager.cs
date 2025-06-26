@@ -11,6 +11,10 @@ using NAudio.Wave;
 
 class WhisperManager
 {
+    static WaveInEvent? waveIn = null;
+    static bool isRecording = false;
+    static WaveFileWriter? writer = null;
+    static string wavPath = "assets/temp/stt_input.wav";
     // Prüfe, ob der Whisper-Server läuft, und starte ihn ggf.
     public async Task StartWhisperServer(string modelPath = "modules/Whisper-Speech-to-text/whisper.cpp/models/ggml-base.bin", string language = "de", string port = "8080")
     {
@@ -44,7 +48,7 @@ class WhisperManager
         }
     }
     // Sende Audiodatei an Server
-    public async Task<string> SendAudioToServer(string wavPath, string serverUrl)
+    public async Task<string> SendAudioToServer(string serverUrl = "http://127.0.0.1:8080")
     {
         using var client = new HttpClient();
         try
@@ -68,5 +72,55 @@ class WhisperManager
             Console.WriteLine("Fehler: " + e.Message);
         }
         return null;
+    }
+
+    // Startet die Audioaufnahme
+    public void StartRecording()
+    {
+        if (isRecording) return; // Bereits am Aufnehmen
+
+        Console.WriteLine("🎙 Aufnahme gestartet...");
+        isRecording = true;
+        waveIn = new WaveInEvent
+        {
+            WaveFormat = new WaveFormat(16000, 1),
+            BufferMilliseconds = 100,
+            NumberOfBuffers = 3
+        };
+
+        writer = new WaveFileWriter(wavPath, waveIn.WaveFormat);
+
+        waveIn.DataAvailable += (s, e) =>
+        {
+            if (isRecording && writer != null)
+            {
+                writer.Write(e.Buffer, 0, e.BytesRecorded);
+            }
+        };
+
+        waveIn.StartRecording();
+    }
+
+    // Stoppt die Audioaufnahme
+    public void StopRecording()
+    {
+        if (!isRecording) return; // Bereits gestoppt
+
+        Console.WriteLine("🛑 Aufnahme gestoppt.");
+        isRecording = false;
+
+        waveIn?.StopRecording();
+        writer?.Flush();
+        writer?.Dispose();
+        waveIn?.Dispose();
+        
+        writer = null;
+        waveIn = null;
+    }
+
+    // Überprüft, ob gerade aufgenommen wird
+    public static bool IsRecording()
+    {
+        return isRecording;
     }
 }

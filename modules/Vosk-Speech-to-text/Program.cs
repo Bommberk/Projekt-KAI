@@ -8,6 +8,8 @@ using System.Text.Json;
 using AudioSwitcher.AudioApi.CoreAudio;
 using System.Threading.Tasks.Dataflow;
 using Modules.OllamaAssistent;
+using Modules.WhisperSpeechToText;
+using System.Net;
 
 // Wie oben, aber mit showRecordings & showSentences Unterstützung
 
@@ -16,11 +18,8 @@ class VoskProgram
     private WaveInEvent waveIn;
     private VoskRecognizer recognizer;
     private Model model;
-
+    private WhisperManager whisperManager = new WhisperManager();
     private OllamaProgram ollamaProgram = new OllamaProgram();
-
-    private bool showRecordings = false;
-    private bool showSentences = true;
 
     public async Task Run()
     {
@@ -44,22 +43,39 @@ class VoskProgram
 
         waveIn.DataAvailable += async (s, a) =>
         {
-            if (showRecordings)
-                Console.WriteLine($"Empfangen: {a.BytesRecorded} Bytes");
-
             if (recognizer.AcceptWaveform(a.Buffer, a.BytesRecorded))
             {
                 string result = recognizer.Result();
-                if (showSentences)
-                    Console.WriteLine("✅ Satz: " + ExtractText(result));
-                    await ollamaProgram.Run(ExtractText(result));
+                string text = ExtractText(result);
+                int wordCount = text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+                if (wordCount < 2)
+                {
+                    Console.WriteLine("❗ Kein richtigen Satz erkannt, bitte lauter sprechen.");
+                    whisperManager.StopRecording();
+                    return;
+                }
+                else
+                {
+                    whisperManager.StopRecording();
+                    result = await whisperManager.SendAudioToServer();
+                    await ollamaProgram.Run(result);
+                }
             }
-            // else
-            // {
-            //     string partial = recognizer.PartialResult();
-            //     if (showSentences)
-            //         Console.WriteLine("... " + ExtractPartial(partial));
-            // }
+            else
+            {
+                string partial = recognizer.PartialResult();
+                Console.WriteLine("... " + ExtractPartial(partial));
+                if (ExtractPartial(partial).Length > 0)
+                {
+                    try
+                    {
+                        whisperManager.StartRecording();
+                    }catch(Exception ex)
+                    {
+                        Console.WriteLine("Fehler beim Starten der Aufnahme: " + ex.Message);
+                    }
+                }
+            }
         };
 
         waveIn.StartRecording();

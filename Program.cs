@@ -14,16 +14,21 @@ class Program
         var ttsProgram = new CoquiProgram();
         await ttsProgram.StartTtsServer();
 
-        // Programm Start
+        // Whisper starten
         var whisperManager = new WhisperManager();
         string modelPath = "modules/Whisper-Speech-to-text/whisper.cpp/models/ggml-medium.bin";
         await whisperManager.StartWhisperServer(modelPath);
 
-        while (true)
-        {
-            string output = await WhisperProgram.Run();
-            await new OllamaProgram().Run(output);
-        }
+
+        // while (true)
+        // {
+        //     string output = await WhisperProgram.Run();
+        //     await new OllamaProgram().Run(output);
+        // }
+
+        // Vosk starten
+        var voskProgram = new VoskProgram();
+        await voskProgram.Run();
 
 
 
