@@ -2,6 +2,7 @@ namespace Methods;
 
 using System;
 using System.Reflection;
+using System.Text.Json;
 
 class InfoOverMethod
 {
@@ -51,8 +52,9 @@ class InfoOverMethod
         // Wenn die Methode gefunden wurde, dann aufrufen
         if (method != null)
         {
-            Console.WriteLine($"🔍 Aufruf der Methode: {methodName}");
             ParameterInfo[] parameters = method.GetParameters();
+            Console.WriteLine($"🔍 Aufruf der Methode: {methodName} mit den Parameter/n: {parameter}");
+            Console.WriteLine();
 
             if (parameters.Length == 0 || parameter == "null")
             {
@@ -68,6 +70,32 @@ class InfoOverMethod
                 method.Invoke(methodsInstance, new object[] { parameter });
                 Console.WriteLine("✅ Methode wurde mit Parameter ausgeführt.");
             }
+            else if (parameters.Length == 2 && parameter != null)
+            {
+                Console.WriteLine("⏳ Methode wird mit zwei Parametern ausgeführt.");
+
+                var paramArray = System.Text.Json.JsonSerializer.Deserialize<object[]>(parameter);
+
+                var convertedParams = paramArray.Select(p =>
+                {
+                    if (p is JsonElement element)
+                    {
+                        if (element.ValueKind == JsonValueKind.Null)
+                            return null;
+
+                        var str = element.ToString();
+                        return str == "null" ? null : str;
+                    }
+
+                    // Falls kein JsonElement (z. B. direkt string)
+                    return p?.ToString() == "null" ? null : p;
+                }).ToArray();
+
+                method.Invoke(methodsInstance, new object[] { convertedParams[0], convertedParams[1] });
+
+                Console.WriteLine("✅ Methode wurde mit zwei Parametern ausgeführt.");
+            }
+
             else
             {
                 Console.WriteLine("Falsche Parameteranzahl oder ungültiger Parameter.");

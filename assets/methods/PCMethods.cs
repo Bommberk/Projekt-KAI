@@ -46,4 +46,19 @@ class PcMethods
         // Process.Start("shutdown", $"/s /t {seconds}");
         Console.WriteLine("aösldkfj");
     }
+    public void restartPc(int seconds)
+    {
+        // Process.Start("shutdown", $"/r /t {seconds}");
+        Console.WriteLine("aösldkfj");
+    }
+    public void logOffPc(int seconds)
+    {
+        // Process.Start("shutdown", $"/l /t {seconds}");
+        Console.WriteLine("aösldkfj");
+    }
+    public void lockPc()
+    {
+        Process.Start("rundll32.exe", "user32.dll,LockWorkStation");
+        Console.WriteLine("PC wurde gesperrt.");
+    }
 }

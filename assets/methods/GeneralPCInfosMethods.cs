@@ -40,7 +40,7 @@ class GeneralPCInfosMethods
     // Welches Media läuft
     public void getCurrentMedia()
     {
-
+        
     }
     // Welche Programme laufen
     // Welche Hardware ist verbaut

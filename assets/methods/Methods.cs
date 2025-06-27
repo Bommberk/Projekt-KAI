@@ -15,7 +15,10 @@ public class Methods
     PcMethods pcMethods = new PcMethods();
     public void closeProgram(string programName) { pcMethods.closeProgram(programName); }
     public void startProgram(string programName) { pcMethods.startProgram(programName); }
-    public void shutDownPc() { pcMethods.shutDownPc(0); }
+    public void shutDownPc(int seconds) { pcMethods.shutDownPc(seconds); }
+    public void restartPc(int seconds) { pcMethods.restartPc(seconds); }
+    public void logOffPc(int seconds) { pcMethods.logOffPc(seconds); }
+    public void lockPc() { pcMethods.lockPc(); }
 
     // Media Steuerung
     MediaMethods mediaMethods = new MediaMethods();
@@ -38,10 +41,10 @@ public class Methods
 
     // Spotify Steuerung
     private SpotifyManager spotifyManager = new SpotifyManager(new SpotifyAuthService());
-    public async Task playSpotifyMusic(){ await spotifyManager.PlayAsync(); }
-    public async Task pauseSpotifyMusic(){ await spotifyManager.PauseAsync(); }
-    public async Task nextSpotifyTrack(){ await spotifyManager.SkipNextAsync(); }
-    public async Task previousSpotifyTrack(){ await spotifyManager.SkipPreviousAsync(); }
+    public async Task playSpotifyMusic() { await spotifyManager.PlayAsync(); }
+    public async Task pauseSpotifyMusic() { await spotifyManager.PauseAsync(); }
+    public async Task nextSpotifyTrack() { await spotifyManager.SkipNextAsync(); }
+    public async Task previousSpotifyTrack() { await spotifyManager.SkipPreviousAsync(); }
     public async Task playSpotifySongByName(string title, string artist = null)
     {
         await spotifyManager.PlaySongByNameAsync(title, artist);

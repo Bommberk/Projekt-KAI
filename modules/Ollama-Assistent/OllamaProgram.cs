@@ -44,19 +44,9 @@ class OllamaProgram
         }
 
 
-        bool isJson = false;
         try
         {
             JsonDocument.Parse(output2);
-            isJson = true;
-        }
-        catch (JsonException)
-        {
-            isJson = false;
-        }
-
-        if (isJson)
-        {
             Console.WriteLine("JSON erkannt, verarbeite...");
             var jsonOutput = JsonDocument.Parse(output2);
             JsonElement root = jsonOutput.RootElement;
@@ -66,14 +56,13 @@ class OllamaProgram
                 {
                     string methodName = property.Name;
                     string parameter = property.Value.ToString();
-                    Console.WriteLine($"Aufruf der Methode: {methodName} mit Parameter: {parameter}");
                     infoOverMethod.callMethod(methodName, parameter);
                 }
             }
         }
-        else
+        catch (JsonException e)
         {
-            Console.WriteLine("Kein JSON erkannt.");
+            Console.WriteLine($"Fehler beim Verarbeiten des JSON: {e.Message}");
         }
     }
 }

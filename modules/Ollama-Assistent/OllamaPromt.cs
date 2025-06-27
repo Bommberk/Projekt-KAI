@@ -53,7 +53,17 @@ class OllamaPromt
             Bachte dabei folgendes:
             1. Das'JA' ganz am Anfang MUSS entfernt werden da es nicht mit ins JSON gehört!
             2. Alle Bindestriche MÜSSEN entfernt werden!
-            Hier ist wichtig das du ausschließlich nur dieses JSON dann als Antwort gibts und nichts weiteres schreibst. 
+            3. Bitte Leerzeichen NICHT entfernen, da diese wichtig sind für die Parameter!
+            4. das JSON soll dann ca. so aussehen:
+               {{funktionsname: 'parameter'}}
+               zum Beispiel:
+               {{'closeProgram': 'Spotify'}}
+               4.1 Falls mehrere Parameter angegeben wurden, dann soll das JSON so aussehen:
+               {{funktionsname: ['parameter1', 'parameter2']}}
+               zum Beispiel:
+               {{'playSpotifySongByName': ['songname', 'künstlername']}}
+               4.2 Falls der zweite Parameter nicht angegeben wurde, dann soll der zweite Parameter einfach 'null' sein.
+            Hier ist wichtig das du ausschließlich nur dieses JSON dann als Antwort gibst und nichts weiteres schreibst. 
             {ollamaAnswer}
         ";
     }
