@@ -28,7 +28,7 @@ class InfoOverMethod
             };
             for (int i = 0; i < parameters.Length; i++)
             {
-                paramDict.Add($"parameter{i + 1}", parameters[i].Name);
+                paramDict.Add($"parameter{i + 1}", parameters[i].Name ?? "unknown");
             }
             // Convert to string representation
             var paramList = paramDict.Select(kvp => $"\"{kvp.Key}\" => \"{kvp.Value}\"");
@@ -47,7 +47,7 @@ class InfoOverMethod
         Type type = methodsInstance.GetType();
 
         // Methode über den Namen suchen
-        MethodInfo method = type.GetMethod(methodName);
+        MethodInfo? method = type.GetMethod(methodName);
 
         // Wenn die Methode gefunden wurde, dann aufrufen
         if (method != null)
@@ -76,7 +76,9 @@ class InfoOverMethod
 
                 var paramArray = System.Text.Json.JsonSerializer.Deserialize<object[]>(parameter);
 
-                var convertedParams = paramArray.Select(p =>
+                if (paramArray != null)
+                {
+                    var convertedParams = paramArray.Select(p =>
                 {
                     if (p is JsonElement element)
                     {
@@ -91,9 +93,10 @@ class InfoOverMethod
                     return p?.ToString() == "null" ? null : p;
                 }).ToArray();
 
-                method.Invoke(methodsInstance, new object[] { convertedParams[0], convertedParams[1] });
+                    method.Invoke(methodsInstance, new object?[] { convertedParams[0], convertedParams[1] });
 
-                Console.WriteLine("✅ Methode wurde mit zwei Parametern ausgeführt.");
+                    Console.WriteLine("✅ Methode wurde mit zwei Parametern ausgeführt.");
+                }
             }
 
             else

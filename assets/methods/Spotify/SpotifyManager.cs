@@ -54,7 +54,7 @@ public class SpotifyManager
     }
 
     // Beispiel: Ein Song per Name (und optional Künstler) suchen und zufällig abspielen
-    public async Task PlaySongByNameAsync(string title, string artist = null)
+    public async Task PlaySongByNameAsync(string title, string? artist = null)
     {
         await SetAuthHeaderAsync();
 
@@ -78,15 +78,18 @@ public class SpotifyManager
 
         foreach (var track in tracks.EnumerateArray())
         {
-            string trackName = track.GetProperty("name").GetString();
-            string firstArtist = track.GetProperty("artists")[0].GetProperty("name").GetString();
-            string key = trackName.ToLower() + "|" + firstArtist.ToLower();
+            string? trackName = track.GetProperty("name").GetString();
+            string? firstArtist = track.GetProperty("artists")[0].GetProperty("name").GetString();
+            string key = (trackName?.ToLower() ?? "") + "|" + (firstArtist?.ToLower() ?? "");
 
-            if (!uniqueTracks.Contains(key))
+            if (!uniqueTracks.Contains(key) && trackName != null && firstArtist != null)
             {
                 uniqueTracks.Add(key);
-                string trackId = track.GetProperty("id").GetString();
-                filtered.Add((trackId, trackName, firstArtist));
+                string? trackId = track.GetProperty("id").GetString();
+                if (trackId != null)
+                {
+                    filtered.Add((trackId, trackName, firstArtist));
+                }
             }
         }
 
@@ -140,9 +143,9 @@ public class SpotifyManager
 
             foreach (var playlist in playlists.EnumerateArray())
             {
-                string name = playlist.GetProperty("name").GetString();
-                string owner = playlist.GetProperty("owner").GetProperty("display_name").GetString();
-                Console.WriteLine($"Playlist: {name} (Owner: {owner})");
+                string? name = playlist.GetProperty("name").GetString();
+                string? owner = playlist.GetProperty("owner").GetProperty("display_name").GetString();
+                Console.WriteLine($"Playlist: {name ?? "Unknown"} (Owner: {owner ?? "Unknown"})");
             }
 
             int total = doc.RootElement.GetProperty("total").GetInt32();
@@ -193,25 +196,28 @@ public class SpotifyManager
 
             foreach (var playlist in playlists.EnumerateArray())
             {
-                string name = playlist.GetProperty("name").GetString();
+                string? name = playlist.GetProperty("name").GetString();
                 if (string.Equals(name, playlistName, StringComparison.OrdinalIgnoreCase))
                 {
-                    string uri = playlist.GetProperty("uri").GetString();
+                    string? uri = playlist.GetProperty("uri").GetString();
 
-                    var playBody = new
+                    if (uri != null)
                     {
-                        context_uri = uri
-                    };
+                        var playBody = new
+                        {
+                            context_uri = uri
+                        };
 
-                    var content = new StringContent(JsonSerializer.Serialize(playBody));
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        var content = new StringContent(JsonSerializer.Serialize(playBody));
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                    var playResponse = await _httpClient.PutAsync("https://api.spotify.com/v1/me/player/play", content);
-                    playResponse.EnsureSuccessStatusCode();
+                        var playResponse = await _httpClient.PutAsync("https://api.spotify.com/v1/me/player/play", content);
+                        playResponse.EnsureSuccessStatusCode();
 
-                    Console.WriteLine($"Playlist '{playlistName}' wird abgespielt.");
-                    found = true;
-                    break;
+                        Console.WriteLine($"Playlist '{playlistName}' wird abgespielt.");
+                        found = true;
+                        break;
+                    }
                 }
             }
 

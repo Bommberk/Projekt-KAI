@@ -22,16 +22,16 @@ public class Methods
 
     // Media Steuerung
     MediaMethods mediaMethods = new MediaMethods();
-    public void playOrPause() { mediaMethods.sendPlayPause(); }
-    public void nextMedia() { mediaMethods.sendNextTrack(); }
-    public void previousMedia() { mediaMethods.sendPreviousTrack(); }
-    public void repeatMedia() { mediaMethods.sendRepeatTrack(); }
+    public async Task playOrPause() { await mediaMethods.sendPlayPause(); }
+    public async Task nextMedia() { await mediaMethods.sendNextTrack(); }
+    public async Task previousMedia() { await mediaMethods.sendPreviousTrack(); }
+    public async Task repeatMedia() { await mediaMethods.sendRepeatTrack(); }
     public async Task setVolume(object volume)
     {
         try
         {
             int vol = Convert.ToInt32(volume);
-            mediaMethods.setVolume(vol);
+            await mediaMethods.setVolume(vol);
         }
         catch (Exception e)
         {
@@ -45,7 +45,7 @@ public class Methods
     public async Task pauseSpotifyMusic() { await spotifyManager.PauseAsync(); }
     public async Task nextSpotifyTrack() { await spotifyManager.SkipNextAsync(); }
     public async Task previousSpotifyTrack() { await spotifyManager.SkipPreviousAsync(); }
-    public async Task playSpotifySongByName(string title, string artist = null)
+    public async Task playSpotifySongByName(string title, string? artist = null)
     {
         await spotifyManager.PlaySongByNameAsync(title, artist);
     }
@@ -53,7 +53,7 @@ public class Methods
 
     // Allgemeine PC Infos
     GeneralPCInfosMethods generalPCInfos = new GeneralPCInfosMethods();
-    public void getCurrentVolume() { generalPCInfos.getCurrentVolume(); }
+    public async Task getCurrentVolume() { await generalPCInfos.getCurrentVolume(); }
 
     // Test Methoden
     public void TestFunction(string parameter)

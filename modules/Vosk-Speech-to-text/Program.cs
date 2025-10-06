@@ -16,9 +16,9 @@ using Modules.CoquiTextToSpeech;
 
 class VoskProgram
 {
-    private WaveInEvent waveIn;
-    private VoskRecognizer recognizer;
-    private Model model;
+    private WaveInEvent waveIn = null!;
+    private VoskRecognizer recognizer = null!;
+    private Model model = null!;
     private WhisperManager whisperManager = new WhisperManager();
     private OllamaProgram ollamaProgram = new OllamaProgram();
 
