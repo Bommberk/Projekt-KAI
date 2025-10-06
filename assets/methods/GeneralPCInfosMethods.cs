@@ -10,11 +10,11 @@ class GeneralPCInfosMethods
     // Sprechen
     CoquiProgram tts = new CoquiProgram();
     // Welche Lautstärke
-    public void getCurrentVolume()
+    public async Task getCurrentVolume()
     {
         var defaultDevice = new CoreAudioController().DefaultPlaybackDevice;
         int currentVolume = (int)defaultDevice.Volume;
-        tts.Speak($"Die aktuelle Lautstärke beträgt {currentVolume} Prozent.");
+        await tts.Speak($"Die aktuelle Lautstärke beträgt {currentVolume} Prozent.");
     }
     // Läuft Medium?
     public bool IsMediaRunning()

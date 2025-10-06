@@ -14,7 +14,7 @@ class WhisperManager
     static WaveInEvent? waveIn = null;
     static bool isRecording = false;
     static WaveFileWriter? writer = null;
-    static Process serverProcess = null;
+    static Process? serverProcess = null;
     static string wavPath = "assets/temp/stt_input.wav";
     // Prüfe, ob der Whisper-Server läuft, und starte ihn ggf.
     public async Task StartWhisperServer(string modelPath = "modules/Whisper-Speech-to-text/whisper.cpp/models/ggml-base.bin", string language = "de", string port = "8080")
@@ -72,7 +72,7 @@ class WhisperManager
         {
             Console.WriteLine("Fehler: " + e.Message);
         }
-        return null;
+        return string.Empty;
     }
 
     // Server stoppen

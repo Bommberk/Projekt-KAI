@@ -15,10 +15,11 @@ class CoquiProgram
         await tts.WaitUntilServerReadyAsync();
     }
 
-    public async Task StopItsServer()
+    public Task StopItsServer()
     {
         tts.StopTtsServer();
         Console.WriteLine("Server gestoppt.");
+        return Task.CompletedTask;
     }
 
     public async Task Speak(string text)

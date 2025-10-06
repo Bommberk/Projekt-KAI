@@ -11,7 +11,7 @@ class StartOllama
     OllamaPromt ollamaPromt = new OllamaPromt();
     InfoOverMethod infoOverMethod = new InfoOverMethod();
 
-    public async Task<string> sendRequest(string userInput, string ollamaAnswer = null)
+    public async Task<string> sendRequest(string userInput, string? ollamaAnswer = null)
     {
         using var client = new HttpClient();
         const string url = "http://localhost:11434/api/generate";
@@ -48,8 +48,11 @@ class StartOllama
         string resultJson = await response.Content.ReadAsStringAsync();
 
         using var doc = JsonDocument.Parse(resultJson);
-        string output = doc.RootElement.GetProperty("response").GetString();
-        output = output.Replace(". ", "." + Environment.NewLine);
-        return output;
+        string? output = doc.RootElement.GetProperty("response").GetString();
+        if (output != null)
+        {
+            output = output.Replace(". ", "." + Environment.NewLine);
+        }
+        return output ?? string.Empty;
     }
 }

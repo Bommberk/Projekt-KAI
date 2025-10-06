@@ -16,8 +16,8 @@ public class SpotifyAuthService
     private const string redirectUri = "http://127.0.0.1:5000/callback/";
     private const string tokenFile = "assets/temp/spotify_token.txt";
 
-    private string accessToken;
-    private string refreshToken;
+    private string accessToken = string.Empty;
+    private string refreshToken = string.Empty;
     private DateTime tokenExpiry;
 
     public async Task<string> GetAccessTokenAsync()
@@ -69,8 +69,8 @@ public class SpotifyAuthService
             throw new Exception("Fehler beim Token-Austausch: " + responseContent);
 
         var json = JsonDocument.Parse(responseContent).RootElement;
-        accessToken = json.GetProperty("access_token").GetString();
-        refreshToken = json.GetProperty("refresh_token").GetString();
+        accessToken = json.GetProperty("access_token").GetString() ?? string.Empty;
+        refreshToken = json.GetProperty("refresh_token").GetString() ?? string.Empty;
         int expiresIn = json.GetProperty("expires_in").GetInt32();
         tokenExpiry = DateTime.UtcNow.AddSeconds(expiresIn - 60);
 
@@ -99,7 +99,7 @@ public class SpotifyAuthService
             return false;
 
         var json = JsonDocument.Parse(responseContent).RootElement;
-        accessToken = json.GetProperty("access_token").GetString();
+        accessToken = json.GetProperty("access_token").GetString() ?? string.Empty;
         int expiresIn = json.GetProperty("expires_in").GetInt32();
         tokenExpiry = DateTime.UtcNow.AddSeconds(expiresIn - 60);
 
@@ -117,7 +117,7 @@ public class SpotifyAuthService
 
         var context = await listener.GetContextAsync();
         var request = context.Request;
-        string code = request.QueryString["code"];
+        string? code = request.QueryString["code"];
 
         string responseString = "<html><body><h1>Erfolgreich verbunden. Dieses Fenster kannst du jetzt schließen.</h1></body></html>";
         byte[] buffer = Encoding.UTF8.GetBytes(responseString);
@@ -127,7 +127,7 @@ public class SpotifyAuthService
         response.OutputStream.Close();
         listener.Stop();
 
-        return code;
+        return code ?? string.Empty;
     }
 
     private void SaveTokenToFile()

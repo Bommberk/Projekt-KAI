@@ -25,43 +25,43 @@ class MediaMethods
     private const int KEYEVENTF_KEYDOWN = 0x0000; // Tastendruck
     private const int KEYEVENTF_KEYUP = 0x0002;   // Loslassen
 
-    public void sendPlayPause()
+    public async Task sendPlayPause()
     {
         if (new GeneralPCInfosMethods().IsMediaRunning())
         {
-            tts.Speak("Medium wird pausiert.");
+            await tts.Speak("Medium wird pausiert.");
         } else {
-            tts.Speak("Medium wird gestartet.");
+            await tts.Speak("Medium wird gestartet.");
         }
 
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_KEYUP, 0);
     }
-    public void sendNextTrack()
+    public async Task sendNextTrack()
     {
-        tts.Speak("Nächstes Medium wird abgespielt.");
+        await tts.Speak("Nächstes Medium wird abgespielt.");
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_NEXT_TRACK, 0, KEYEVENTF_KEYUP, 0);
     }
-    public void sendPreviousTrack()
+    public async Task sendPreviousTrack()
     {
-        tts.Speak("Vorheriges Medium wird abgespielt.");
+        await tts.Speak("Vorheriges Medium wird abgespielt.");
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
     }
-    public void sendRepeatTrack()
+    public async Task sendRepeatTrack()
     {
-        tts.Speak("Medium wird wiederholt.");
+        await tts.Speak("Medium wird wiederholt.");
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYDOWN, 0);
         keybd_event(VK_MEDIA_PREV_TRACK, 0, KEYEVENTF_KEYUP, 0);
     }
 
     // Lautstärke ändern
-    public void setVolume(int volume)
+    public async Task setVolume(int volume)
     {
-        tts.Speak($"Lautstärke wird auf {volume} Prozent gesetzt.");
+        await tts.Speak($"Lautstärke wird auf {volume} Prozent gesetzt.");
         var defaultDevice = new CoreAudioController().DefaultPlaybackDevice;
         volume = Math.Max(0, Math.Min(100, volume));
         defaultDevice.Volume = volume;
