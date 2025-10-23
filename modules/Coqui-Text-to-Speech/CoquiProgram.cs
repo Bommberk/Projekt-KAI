@@ -15,7 +15,7 @@ class CoquiProgram
         await tts.WaitUntilServerReadyAsync();
     }
 
-    public async Task StopItsServer()
+    public async Task StopTtsServer()
     {
         tts.StopTtsServer();
         Console.WriteLine("Server gestoppt.");
