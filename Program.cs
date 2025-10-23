@@ -34,7 +34,7 @@ class Program
 
         AppDomain.CurrentDomain.ProcessExit += async (sender, e) =>
         {
-            await ttsProgram.StopItsServer();
+            await ttsProgram.StopTtsServer();
             whisperManager.StopWhisperServer();
         };
 
